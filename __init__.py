@@ -26,12 +26,18 @@ class MycroftAkinator(MycroftSkill):
         """
         question = first_question
         while aki.progression <= probability:
-            answer = self.ask_yesno(question + "\n\t")
-            if answer != "yes" and answer != "no":
-                # if the user didn't say "yes" or "no", pass "i don't know" to Akinator
-                # TODO: make this working like it should, with vocabulary for "i don't know", "probably" and "probably not" for every language (or a better idea than that)
+            answer = self.ask_yesno(question)
+            if answer == "yes" or answer == "no":
+                answer = answer
+            elif self.voc_match(answer, "stop") == True:
+                # TODO: is there a better way to stop the execution of the skill
+                return "stop"
+            # TODO: maybe put the last two clauses together?
+            elif self.voc_match(answer, "i.dont.know") == True:
                 answer = "idk"
-            question = aki.answer(answer)
+            else:
+                answer = "idk"
+            question = aki.answer(answer) 
         return aki.win()
 
 
@@ -44,7 +50,12 @@ class MycroftAkinator(MycroftSkill):
         self.speak_dialog("think.of.a.character")
         aki = akinator.Akinator()
         first_question = aki.start_game(language = MycroftAkinator.language_code)
+        # starts the process of asking the questions
+        # 80 is the probability at which Akinator will take his guess as to who the user thought of (Akinator is 80% sure that he has the right person)
+        # this value is recommended by the API
         win_data = MycroftAkinator.ask_akinator(self, aki, first_question, 80)
+        if win_data == "stop":
+            return
         self.speak_dialog("guess", {"name": win_data["name"]})
         final_answer = self.ask_yesno("am.i.correct")
 
