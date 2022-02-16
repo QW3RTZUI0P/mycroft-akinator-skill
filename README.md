@@ -2,14 +2,14 @@
 Plays with you the akinator game from akinator.com
 
 ## About
-Think of a person, start the akinator skill and let akinator do its work. will it be able to guess who you thought of?
+Think of a real or fictional character, start Akinator and let him guess who it is. Will he be able to guess who you thought of?
 
 ## Examples
 * "Start akinator"
-* "Guess who i am"
+* "Guess who I am"
 
 ## Credits
-QW3RTZUI0P
+* NinjaSnail1080 for the package akinator.py
 
 ## Category
 **Entertainment**
