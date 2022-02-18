@@ -13,8 +13,8 @@ Think of a real or fictional character, start Akinator and let him guess who it 
 * German
 
 ## To Do
-* implement Child Mode (with setting on home.mycroft.ai)
-* implement option to continue the current game when Akinator took a wron guess
+* implement option to continue the current game when Akinator took a wrong guess
+* let Mycroft suggest to play another round
 
 ## Contributing
 Feel free to contribute at any time! I'm especially grateful for language contributions.
