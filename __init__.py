@@ -5,16 +5,19 @@ import akinator
 
 class MycroftAkinator(MycroftSkill):
 
-    """ The two letter country code of the Mycroft device
-    """
+    # The two letter country code of the Mycroft device
     language_code = ""
+    # whether to set Akinator to child mode (can be changed in skill settings on home.mycroft.ai)
+    child_mode = True
 
     def __init__(self):
         MycroftSkill.__init__(self)
 
     def initialize(self):
         # gets the two-letter country code of the user's Mycroft device
-        MycroftAkinator.language_code = str(DeviceApi().get_location()["city"]["state"]["country"]["code"]).lower()
+        MycroftAkinator.language_code = self.lang[:2]
+        # gets the option for child mode from the Mycroft settings
+        MycroftAkinator.child_mode = self.settings.get("child_mode")
 
     def ask_akinator(self, aki, first_question, probability):
         """ Handle the questions and answers during the akinator game
@@ -49,7 +52,7 @@ class MycroftAkinator(MycroftSkill):
         self.speak_dialog("starting.akinator")
         self.speak_dialog("think.of.a.character")
         aki = akinator.Akinator()
-        first_question = aki.start_game(language = MycroftAkinator.language_code)
+        first_question = aki.start_game(language = MycroftAkinator.language_code, child_mode = MycroftAkinator.child_mode)
         # starts the process of asking the questions
         # 80 is the probability at which Akinator will take his guess as to who the user thought of (Akinator is 80% sure that he has the right person)
         # this value is recommended by the API
@@ -63,8 +66,8 @@ class MycroftAkinator(MycroftSkill):
             self.speak_dialog("success")
         elif final_answer == "no":
             self.speak_dialog("failure")
-            #TODO: implement ability to continue the game and let akinator guess again
-        #TODO: let Mycroft suggest to play another round
+        else:
+            return
         
 
 
